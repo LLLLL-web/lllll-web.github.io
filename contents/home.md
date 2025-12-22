@@ -1,7 +1,5 @@
 
 
-[![Yujie Li](https://img.shields.io/badge/Yujie-Li-github-blue?logo=github)](https://github.com/LLLLL-web)
-
 He is currently an undergraduate student at Shanghai University of Finance and Economics (SUFE).
 
 #### Contact
