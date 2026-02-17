@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新春祝福生成器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #8b0000 0%, #b22222 50%, #ff4500 100%);
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .title i {
+            margin: 0 15px;
+            animation: pulse 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: #fff8dc;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .input-label i {
+            margin-right: 8px;
+        }
+
+        #name-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        #name-input:focus {
+            outline: none;
+            border-color: #ff4500;
+            box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.3);
+        }
+
+        .input-hint {
+            font-size: 0.9rem;
+            color: #fff8dc;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.6);
+        }
+
+        .generate-btn i {
+            margin-right: 10px;
+        }
+
+        .blessing-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #ffd700;
+            animation: cardAppear 0.5s ease-out;
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .blessing-content {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blessing-placeholder {
+            text-align: center;
+            color: #666;
+            opacity: 0.7;
+        }
+
+        .blessing-placeholder i {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .blessing-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            animation: textFadeIn 0.5s ease-out;
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .name-highlight {
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .blessing-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #refresh-btn {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            color: #fff8dc;
+            font-size: 0.9rem;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #4CAF50;
+            animation: slideIn 0.3s ease-out;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .message.error {
+            border-left-color: #f44336;
+        }
+
+        .message.warning {
+            border-left-color: #ff9800;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .blessing-text {
+                font-size: 1.2rem;
+            }
+
+            .blessing-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .title {
+                font-size: 1.6rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-dragon"></i>
+                新春祝福
+                <i class="fas fa-fire"></i>
+            </h1>
+            <p class="subtitle">输入您的名字，生成专属新春祝福语</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="name-input" class="input-label">
+                        <i class="fas fa-user"></i>
+                        请输入您的名字
+                    </label>
+                    <input
+                        type="text"
+                        id="name-input"
+                        placeholder="例如：lyj"
+                        maxlength="20"
+                        autocomplete="off"
+                    >
+                    <p class="input-hint">支持中文名字，最多20个字符</p>
+                </div>
+
+                <button id="generate-btn" class="generate-btn">
+                    <i class="fas fa-magic"></i>
+                    生成祝福
+                </button>
+            </div>
+
+            <div class="blessing-card" id="blessing-card">
+                <div class="blessing-content" id="blessing-content">
+                    <div class="blessing-placeholder">
+                        <i class="fas fa-sparkles"></i>
+                        <p>点击"生成祝福"按钮，获取您的新春祝福语</p>
+                    </div>
+                </div>
+
+                <div class="blessing-actions">
+                    <button id="copy-btn" class="action-btn" title="复制祝福语">
+                        <i class="fas fa-copy"></i>
+                        复制
+                    </button>
+                    <button id="refresh-btn" class="action-btn" title="重新生成">
+                        <i class="fas fa-redo"></i>
+                        重新生成
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 新春祝福 | 祝您新春快乐，万事如意！</p>
+        </footer>
+    </div>
+
+    <div id="message-container"></div>
+
+    <script>
+        // 新春祝福语模板
+        const blessingTemplates = [
+            "{name}，新春快乐！愿您在新的一年里，身体健康，万事如意，阖家幸福！",
+            "恭祝{name}新春大吉！愿您财源广进，事业腾达，心想事成！",
+            "{name}，祝您新年快乐！愿您笑口常开，好运连连，幸福美满每一天！",
+            "金兔辞旧岁，祥龙迎新春。{name}，愿您在新的一年里，如龙腾飞，前程似锦！",
+            "春风送暖入屠苏，{name}迎春接福来。愿您新年新气象，好运常相伴！",
+            "嗨，{name}！新年到，祝福到！愿您在新的一年里，所有的梦想都能实现！",
+            "{name}，新年快乐！愿您的生活像烟花一样绚烂，像灯笼一样红火！",
+            "祝{name}在新的一年里，事业蒸蒸日上，学业进步神速，步步高升！",
+            "{name}，愿您在新的一年里，工作顺利，学习进步，收获满满的成功！",
+            "新春佳节，{name}，愿您和您的家人身体健康，平安喜乐，岁岁安康！"
+        ];
+
+        // DOM元素
+        const nameInput = document.getElementById('name-input');
+        const generateBtn = document.getElementById('generate-btn');
+        const blessingContent = document.getElementById('blessing-content');
+        const copyBtn = document.getElementById('copy-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const messageContainer = document.getElementById('message-container');
+
+        let currentBlessing = '';
+        let currentName = '';
+
+        // 初始化
+        function init() {
+            nameInput.focus();
+
+            generateBtn.addEventListener('click', handleGenerateClick);
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleGenerateClick();
+            });
+            copyBtn.addEventListener('click', handleCopyClick);
+            refreshBtn.addEventListener('click', handleRefreshClick);
+
+            // 键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    handleGenerateClick();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'c' && currentBlessing) {
+                    e.preventDefault();
+                    handleCopyClick();
+                }
+            });
+        }
+
+        // 生成祝福
+        function handleGenerateClick() {
+            const name = nameInput.value.trim();
+
+            if (!name) {
+                showMessage('请输入您的名字', 'warning');
+                nameInput.focus();
+                return;
+            }
+
+            if (name.length > 20) {
+                showMessage('名字长度不能超过20个字符', 'warning');
+                return;
+            }
+
+            currentName = name;
+            const template = blessingTemplates[Math.floor(Math.random() * blessingTemplates.length)];
+            currentBlessing = template.replace('{name}', `<span class="name-highlight">${name}</span>`);
+
+            displayBlessing(currentBlessing);
+            showMessage('祝福语生成成功！', 'success');
+
+            // 按钮动画
+            generateBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => generateBtn.style.transform = '', 150);
+        }
+
+        // 显示祝福
+        function displayBlessing(blessingText) {
+            blessingContent.innerHTML = `<div class="blessing-text">${blessingText}</div>`;
+        }
+
+        // 复制祝福
+        function handleCopyClick() {
+            if (!currentBlessing) {
+                showMessage('请先生成祝福语', 'warning');
+                return;
+            }
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = currentBlessing;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(plainText)
+                    .then(() => {
+                        showMessage('祝福语已复制到剪贴板！', 'success');
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                        copyBtn.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                            copyBtn.style.background = 'linear-gradient(45deg, #2196F3, #1976D2)';
+                        }, 2000);
+                    })
+                    .catch(() => fallbackCopy(plainText));
+            } else {
+                fallbackCopy(plainText);
+            }
+        }
+
+        // 降级复制
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                if (document.execCommand('copy')) {
+                    showMessage('祝福语已复制到剪贴板！', 'success');
+                } else {
+                    showMessage('复制失败，请手动复制', 'error');
+                }
+            } catch (err) {
+                showMessage('复制失败，请手动复制', 'error');
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // 重新生成
+        function handleRefreshClick() {
+            if (!currentName) {
+                showMessage('请输入您的名字', 'warning');
+                nameInput.focus();
+                return;
+            }
+
+            let newTemplate;
+            do {
+                newTemplate = blessingTemplates[Math.floor(Math.random() * blessingTemplates.length)];
+            } while (newTemplate.replace('{name}', currentName) === currentBlessing);
+
+            currentBlessing = newTemplate.replace('{name}', `<span class="name-highlight">${currentName}</span>`);
+            displayBlessing(currentBlessing);
+            showMessage('已重新生成祝福语！', 'success');
+
+            // 按钮动画
+            refreshBtn.style.transform = 'rotate(360deg)';
+            refreshBtn.style.transition = 'transform 0.5s ease';
+            setTimeout(() => refreshBtn.style.transform = '', 500);
+        }
+
+        // 显示消息
+        function showMessage(text, type = 'success') {
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            messageContainer.appendChild(message);
+
+            setTimeout(() => {
+                message.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (message.parentNode) messageContainer.removeChild(message);
+                }, 300);
+            }, 3000);
+        }
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

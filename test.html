@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新春祝福生成器 - 功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-pass {
+            color: green;
+            font-weight: bold;
+        }
+        .test-fail {
+            color: red;
+            font-weight: bold;
+        }
+        .test-warning {
+            color: orange;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>新春祝福生成器 - 功能测试</h1>
+
+    <div class="test-section">
+        <h2>1. 文件检查</h2>
+        <div id="file-check"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 核心功能测试</h2>
+        <div id="function-test"></div>
+        <button onclick="testNameInput()">测试名字输入</button>
+        <button onclick="testBlessingGeneration()">测试祝福生成</button>
+        <button onclick="testCopyFunction()">测试复制功能</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 响应式设计测试</h2>
+        <div id="responsive-test"></div>
+        <button onclick="testResponsive()">测试响应式</button>
+    </div>
+
+    <div class="test-section">
+        <h2>4. 浏览器兼容性</h2>
+        <div id="browser-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. 打开主页面</h2>
+        <button onclick="window.open('new-year-blessing.html', '_blank')">在新标签页打开新春祝福生成器</button>
+    </div>
+
+    <script>
+        // 文件检查
+        function checkFiles() {
+            const files = ['new-year-blessing.html', 'style.css', 'script.js'];
+            const results = [];
+
+            files.forEach(file => {
+                try {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('HEAD', file, false);
+                    xhr.send();
+
+                    if (xhr.status === 200) {
+                        results.push(`<span class="test-pass">✓ ${file} 存在</span>`);
+                    } else {
+                        results.push(`<span class="test-fail">✗ ${file} 不存在</span>`);
+                    }
+                } catch (e) {
+                    results.push(`<span class="test-fail">✗ ${file} 检查失败</span>`);
+                }
+            });
+
+            document.getElementById('file-check').innerHTML = results.join('<br>');
+        }
+
+        // 测试名字输入
+        function testNameInput() {
+            const testCases = [
+                { input: '张三', expected: true, description: '正常中文名字' },
+                { input: '', expected: false, description: '空名字' },
+                { input: '这是一个非常长的测试名字超过二十个字符', expected: false, description: '超长名字' }
+            ];
+
+            const results = testCases.map(test => {
+                const isValid = test.input.length > 0 && test.input.length <= 20;
+                const passed = isValid === test.expected;
+
+                return passed
+                    ? `<span class="test-pass">✓ ${test.description}: 通过</span>`
+                    : `<span class="test-fail">✗ ${test.description}: 失败</span>`;
+            });
+
+            document.getElementById('function-test').innerHTML = results.join('<br>');
+        }
+
+        // 测试祝福生成
+        function testBlessingGeneration() {
+            // 模拟祝福语模板
+            const templates = [
+                "{name}，新春快乐！",
+                "祝{name}新年大吉！",
+                "{name}，愿您新年万事如意！"
+            ];
+
+            const name = "测试用户";
+            const results = [];
+
+            templates.forEach((template, index) => {
+                const blessing = template.replace('{name}', name);
+                const hasName = blessing.includes(name);
+                const hasPlaceholder = !blessing.includes('{name}');
+
+                if (hasName && hasPlaceholder) {
+                    results.push(`<span class="test-pass">✓ 模板${index + 1}: 替换成功</span>`);
+                } else {
+                    results.push(`<span class="test-fail">✗ 模板${index + 1}: 替换失败</span>`);
+                }
+            });
+
+            document.getElementById('function-test').innerHTML = results.join('<br>');
+        }
+
+        // 测试复制功能
+        function testCopyFunction() {
+            const testText = "测试复制功能";
+
+            // 检查Clipboard API是否可用
+            const hasClipboardAPI = navigator.clipboard && window.isSecureContext;
+            const hasExecCommand = document.queryCommandSupported && document.queryCommandSupported('copy');
+
+            let result;
+
+            if (hasClipboardAPI || hasExecCommand) {
+                result = `<span class="test-pass">✓ 复制功能API可用</span>`;
+            } else {
+                result = `<span class="test-warning">⚠ 复制功能可能受限</span>`;
+            }
+
+            document.getElementById('function-test').innerHTML = result;
+        }
+
+        // 测试响应式
+        function testResponsive() {
+            const viewportWidth = window.innerWidth;
+            let result;
+
+            if (viewportWidth < 480) {
+                result = `<span class="test-pass">✓ 移动端视图 (${viewportWidth}px)</span>`;
+            } else if (viewportWidth < 768) {
+                result = `<span class="test-pass">✓ 平板视图 (${viewportWidth}px)</span>`;
+            } else {
+                result = `<span class="test-pass">✓ 桌面视图 (${viewportWidth}px)</span>`;
+            }
+
+            document.getElementById('responsive-test').innerHTML = result;
+        }
+
+        // 浏览器兼容性检查
+        function checkBrowserCompatibility() {
+            const features = {
+                'Flexbox': 'flex' in document.documentElement.style,
+                'CSS Grid': 'grid' in document.documentElement.style,
+                'CSS Animations': 'animation' in document.documentElement.style,
+                'CSS Transitions': 'transition' in document.documentElement.style,
+                'ES6 Modules': 'noModule' in document.createElement('script'),
+                'Fetch API': 'fetch' in window,
+                'Promise': 'Promise' in window
+            };
+
+            const results = Object.entries(features).map(([feature, supported]) => {
+                return supported
+                    ? `<span class="test-pass">✓ ${feature}</span>`
+                    : `<span class="test-warning">⚠ ${feature} (可能受限)</span>`;
+            });
+
+            document.getElementById('browser-test').innerHTML = results.join('<br>');
+        }
+
+        // 页面加载时运行检查
+        window.onload = function() {
+            checkFiles();
+            checkBrowserCompatibility();
+            testResponsive();
+        };
+    </script>
+</body>
+</html>

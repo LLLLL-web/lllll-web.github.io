@@ -1,76 +1,124 @@
+# 新春祝福生成器
 
+一个美观、喜庆的新春祝福网页应用，使用纯HTML、CSS和JavaScript实现。
 
-![Github Forks](https://img.shields.io/github/forks/senli1073/academic-homepage-template?style=flat)
-![Github Stars](https://img.shields.io/github/stars/senli1073/academic-homepage-template?style=flat)
-![License](https://img.shields.io/github/license/senli1073/academic-homepage-template)
-![Last Commit](https://img.shields.io/github/last-commit/senli1073/academic-homepage-template)
+## 功能特点
 
-# A simple Github Pages template for personal academic websites.
+### 核心功能
+1. **个性化祝福生成**：输入名字后，随机生成个性化的新春祝福语
+2. **多样化模板**：内置10条不同风格的祝福语模板
+3. **交互体验**：友好的用户界面和动画效果
+4. **复制分享**：一键复制祝福语，方便分享给亲友
 
-## Preview
-[![Screenshot of the Website](https://raw.githubusercontent.com/senli1073/academic-homepage-template/main/screenshot_full.png)](https://senli1073.github.io/)
+### 页面设计
+- **喜庆风格**：以红色、金色为主色调，充满年味
+- **春节元素**：灯笼、福字、烟花等装饰
+- **响应式布局**：适配电脑、平板、手机等不同设备
+- **动画效果**：按钮点击、祝福语显示等都有流畅动画
 
+## 文件结构
 
-## Introduction
-
-This personal academic website template is based on [startbootstrap](https://github.com/StartBootstrap/startbootstrap-new-age).
-
-The template is designed to integrate Markdown files as content input.  There's no need to compile the webpage before deployment.  Upon loading, the Markdown files are automatically parsed and embedded into the page.
-
-This template supports LaTeX formula input. You can use `$...$` and `\(...\)` as delimiters for inline-math, or use `$$...$$` and `\[...\]` as delimiters for display-math. Macros such as `\ref{...}`, `\eqref{...}`, and `\begin{equation}...\end{equation}` are also supported. See [MathJax](https://docs.mathjax.org/en/latest/index.html) for more details.
-
-:milky_way: Demo: https://senli1073.github.io/
-
-
-## Getting Start
-### 1. Fork this repository
-The repository name should be `<username>.github.io`, which will also be your website's URL.
-
-
-### 2. Edit page content
-
-(1) Go to the folder where you want to store your project, and clone the new repository:
 ```
-git clone https://github.com/<username>/<username>.github.io.git
-```
-The directory structure is as follows:
-
-```.
-.
-├── contents
-└── static
-    ├── assets
-    │   └── img
-    ├── css
-    └── js
+├── new-year-blessing.html    # 主页面
+├── style.css                 # 样式文件
+├── script.js                 # 交互逻辑
+├── test.html                 # 功能测试页面
+└── README.md                 # 说明文档
 ```
 
-(2) Modify the content of each section, which corresponds to `contents/*.md`.
+## 使用方法
 
-(3) Adjust the title, copyright information, and other text of the website in `contents/config.yml`
+### 直接使用
+1. 双击 `new-year-blessing.html` 在浏览器中打开
+2. 在输入框中输入您的名字（支持中文）
+3. 点击"生成祝福"按钮
+4. 查看生成的个性化祝福语
+5. 可以点击"复制"按钮复制祝福语，或点击"重新生成"获取不同祝福
 
-(4) Replace background image and photo with new ones for your web pages in `static/assets/img/`
+### 本地服务器运行
+```bash
+# 使用Python启动HTTP服务器
+python3 -m http.server 8080
 
-(5) Push it: 
+# 然后在浏览器中访问
+# http://localhost:8080/new-year-blessing.html
 ```
-git commit -am 'init'
-git push
+
+## 技术实现
+
+### HTML结构
+- 语义化标签，良好的可访问性
+- 模块化布局，便于维护
+- Font Awesome图标库增强视觉效果
+
+### CSS样式
+- 现代CSS特性：Flexbox、Grid布局
+- 响应式设计：媒体查询适配不同屏幕
+- 动画效果：CSS动画和过渡效果
+- 喜庆配色：红色(#ff0000)、金色(#ffd700)为主色调
+
+### JavaScript功能
+- 祝福语模板管理系统
+- 用户输入验证和处理
+- 剪贴板API实现复制功能
+- 键盘快捷键支持（Ctrl+Enter生成，Ctrl+C复制）
+- 触摸设备优化
+
+## 祝福语模板
+
+内置10条不同风格的祝福语模板：
+
+1. **传统经典** - 传统新春祝福
+2. **财运事业** - 财运和事业相关的祝福
+3. **幸福快乐** - 幸福快乐主题的祝福
+4. **诗意祝福** - 富有诗意的祝福语
+5. **现代祝福** - 现代风格的祝福
+6. **事业学业** - 事业和学业进步的祝福
+7. **健康平安** - 健康平安主题的祝福
+
+## 浏览器兼容性
+
+- ✅ Chrome 60+
+- ✅ Firefox 55+
+- ✅ Safari 11+
+- ✅ Edge 79+
+- ✅ 移动端浏览器
+
+## 开发说明
+
+### 添加新的祝福语模板
+在 `script.js` 文件的 `blessingTemplates` 数组中添加新的模板：
+
+```javascript
+{
+    id: 11,
+    template: "新的祝福语模板，{name}是名字占位符",
+    category: "分类名称"
+}
 ```
 
-### 3. Setup
-(1) Under your repository name, click `Settings`.
+### 自定义样式
+- 修改 `style.css` 中的颜色变量
+- 调整动画效果的时间参数
+- 修改响应式断点
 
-(2) In the "Code and automation" section of the sidebar, click `Pages`.
+### 扩展功能建议
+1. 添加更多祝福语模板
+2. 实现祝福语分享到社交媒体
+3. 添加背景音乐或音效
+4. 支持自定义祝福语模板
+5. 添加多语言支持
 
-(3) Under "Build and deployment", under "Source", select Deploy from a branch. Then, use the branch dropdown menu and select a publishing source.
+## 许可证
 
-### 4. Enjoy
+本项目仅供学习和个人使用。
 
-Fire up a browser and go to `https://<username>.github.io`
+## 注意事项
 
-> Note that it can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub.
+1. 确保网络连接正常以加载Font Awesome图标
+2. 复制功能需要浏览器支持Clipboard API
+3. 建议在现代浏览器中使用以获得最佳体验
 
+---
 
-## License
-
-Copyright Sen Li, 2023-2025. Licensed under an MIT license. You can copy and mess with this template.
+**祝您新春快乐，万事如意！** 🎉🎊
